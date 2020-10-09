@@ -11,9 +11,9 @@ import {
 
 const initialState = {
   board: {},
-  gameSize: 20,
+  gameSize: 10,
   isStarted: false,
-  boardMinesCount: 40,
+  boardMinesCount: 20,
   isGameOver: false,
   flagsCount: 0,
   isGameWin: null,

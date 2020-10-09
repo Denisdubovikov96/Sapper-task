@@ -45,7 +45,7 @@ export default function Cell({ item }) {
     isOpen: item.isOpen,
     count: item.neighborMineCount,
   });
-  const { isGameOver } = useSelector((state) => state.sapper);
+  const { isGameOver, isStarted } = useSelector((state) => state.sapper);
 
   const dispatch = useDispatch();
 
@@ -67,7 +67,7 @@ export default function Cell({ item }) {
       return;
     } else if (isOpen) {
       return;
-    } else {
+    } else if (isStarted) {
       dispatch(cellRightClick(id));
     }
   };

@@ -97,14 +97,17 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
 };
 
 export const cellRightClick = (id) => (dispatch, getState) => {
-  const { board } = getState().sapper;
+  const { board, flagsCount } = getState().sapper;
   const updatedBoard = board;
   if (updatedBoard[id].isFlagged === true) {
     updatedBoard[id].isFlagged = false;
     dispatch({ type: FLAGS_INCREMENT });
   } else {
-    updatedBoard[id].isFlagged = true;
-    dispatch({ type: FLAGS_DECREMENT });
+    if (flagsCount - 1 < 0) {
+    } else {
+      updatedBoard[id].isFlagged = true;
+      dispatch({ type: FLAGS_DECREMENT });
+    }
   }
 
   dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
