@@ -7,21 +7,21 @@ import {
   CELL_RIGHT_CLICK,
   FLAGS_DECREMENT,
   FLAGS_INCREMENT,
-  SET_GAME_OVER_TIME
+  SET_GAME_OVER_TIME,
 } from "./actionTypes";
 
 const initialState = {
   board: {},
-  gameSize: 10,
+  gameSize: 16,
   isStarted: false,
-  boardMinesCount: 20,
+  boardMinesCount: 40,
   isGameOver: false,
   flagsCount: 0,
   isGameWin: null,
   score: {
     time: null,
-    safeMines: null
-  }
+    safeMines: null,
+  },
 };
 
 export const sapperReduser = (state = initialState, { type, payload }) => {
@@ -58,7 +58,12 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
         ...state,
         isGameOver: true,
         board: payload.board,
-        score: {...state.score,safeMines: payload.safeMines}
+        score: { ...state.score, safeMines: payload.safeMines },
+      };
+    case SET_GAME_OVER_TIME:
+      return {
+        ...state,
+        score: { ...state.score, time: payload },
       };
     case FLAGS_DECREMENT:
       return {
@@ -70,11 +75,6 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
         ...state,
         flagsCount: state.flagsCount + 1,
       };
-    case SET_GAME_OVER_TIME:
-      return {
-        ...state,
-        score: {...state.score, time: payload}
-      }
 
     default:
       return state;

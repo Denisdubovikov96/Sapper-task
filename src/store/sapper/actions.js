@@ -69,7 +69,6 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
         payload: { board: updatedBoard, safeMines: safeMines.length },
       });
     } else {
-      debugger;
       const opensBoard = recursionOpen(updatedBoard, id);
       dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
     }
