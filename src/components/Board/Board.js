@@ -20,6 +20,7 @@ const useStyles = makeStyles({
     borderRadius: 5,
     overflow: "hidden",
     boxShadow: "4px 4px 15px 0px rgba(0,0,0,0.45)",
+    color: "#3f51b5",
   }),
   pannel: {
     width: "100%",
