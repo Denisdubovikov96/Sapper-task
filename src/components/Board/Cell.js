@@ -26,10 +26,11 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 900,
     "&:hover": {
-      boxShadow: "3px 3px 8px 0px black",
-      background: props.isOpen ? null : "white",
+      boxShadow: props.isOpen
+        ? "0px 0px 15px 0px white"
+        : "3px 3px 8px 0px black",
+      background: props.isOpen ? "#cfd8dc" : "white",
       cursor: "pointer",
-      cellOpen: props.isOpen ? "#cfd8dc" : null,
     },
     "&>img": {
       width: 22,
