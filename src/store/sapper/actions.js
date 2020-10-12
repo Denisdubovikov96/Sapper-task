@@ -37,7 +37,7 @@ export const createBoard = () => (dispatch, getState) => {
 export const cellLeftClick = (id) => (dispatch, getState) => {
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
-    const boardWithMines = board;
+    const boardWithMines = { ...board };
     boardWithMines[id].isOpen = true;
     let i = 0;
     do {
@@ -51,13 +51,11 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
         i++;
       }
     } while (i < boardMinesCount);
-
     setNeighbors(boardWithMines);
-
     const boardAfterFirstOpen = recursionOpen(boardWithMines, id);
     dispatch({ type: START_GAME, payload: boardAfterFirstOpen });
   } else {
-    const updatedBoard = board;
+    const updatedBoard = { ...board };
     if (updatedBoard[id].isMined) {
       updatedBoard[id].isOpen = true;
       const safeMines = Object.keys(updatedBoard).filter((key) => {
@@ -71,6 +69,7 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
         payload: { board: updatedBoard, safeMines: safeMines.length },
       });
     } else {
+      debugger;
       const opensBoard = recursionOpen(updatedBoard, id);
       dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
     }
@@ -79,7 +78,8 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
 
 export const cellRightClick = (id) => (dispatch, getState) => {
   const { board, flagsCount } = getState().sapper;
-  const updatedBoard = board;
+  const updatedBoard = { ...board };
+
   if (updatedBoard[id].isFlagged === true) {
     updatedBoard[id].isFlagged = false;
     dispatch({ type: FLAGS_INCREMENT });

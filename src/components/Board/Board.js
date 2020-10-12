@@ -65,7 +65,7 @@ export default function Board() {
         <div className={classes.resultPannel}>
           <h2>Ваш результат</h2>
           <div>
-            <span>{`Время: ${score.time}`}</span>
+            <span>{`Время: ${score.time} sec`}</span>
             <span>{`Обезвреженые мины: ${score.safeMines}`}</span>
           </div>
         </div>
