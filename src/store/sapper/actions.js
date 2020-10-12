@@ -2,6 +2,7 @@ import {
   createCell,
   getRanCoord,
   recursionOpen,
+  setNeighbors,
 } from "../../helperFunctions/helperFuntions";
 import {
   INIT_GAME,
@@ -12,9 +13,10 @@ import {
   CELL_RIGHT_CLICK,
   FLAGS_DECREMENT,
   FLAGS_INCREMENT,
+  SET_GAME_OVER_TIME,
 } from "./actionTypes";
 
-export const initGame = (gameSize = 10) => {
+export const initGame = (gameSize) => {
   return {
     type: INIT_GAME,
     payload: gameSize,
@@ -37,13 +39,6 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
   if (!isStarted) {
     const boardWithMines = board;
     boardWithMines[id].isOpen = true;
-
-    const findCount = () => {
-      const count = Object.keys(boardWithMines).filter((key) => {
-        return boardWithMines[key].isMined;
-      });
-      return count.length;
-    };
     let i = 0;
     do {
       const randomId = `${getRanCoord(0, gameSize - 1)}-${getRanCoord(
@@ -56,41 +51,27 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
         i++;
       }
     } while (i < boardMinesCount);
-    Object.keys(boardWithMines).map((item) => {
-      const { x, y } = boardWithMines[item];
-      const neighbors = [];
-      neighbors.push(`${x - 1}-${y - 1}`);
-      neighbors.push(`${x - 1}-${y}`);
-      neighbors.push(`${x - 1}-${y + 1}`);
-      neighbors.push(`${x}-${y - 1}`);
-      neighbors.push(`${x}-${y + 1}`);
-      neighbors.push(`${x + 1}-${y - 1}`);
-      neighbors.push(`${x + 1}-${y}`);
-      neighbors.push(`${x + 1}-${y + 1}`);
-      const filterNeigbours = neighbors.filter((coordId) => {
-        return board[coordId] ? coordId : null;
-      });
-      const minesCount = filterNeigbours.reduce((acumulator, currentKey) => {
-        if (boardWithMines[currentKey].isMined) {
-          return acumulator + 1;
-        } else {
-          return acumulator;
-        }
-      }, 0);
-      boardWithMines[item].neighbors = filterNeigbours;
-      boardWithMines[item].neighborMineCount = minesCount;
-    });
-    console.log(findCount());
-    const firstOpen = recursionOpen(boardWithMines, id);
-    dispatch({ type: START_GAME, payload: firstOpen });
+
+    setNeighbors(boardWithMines);
+
+    const boardAfterFirstOpen = recursionOpen(boardWithMines, id);
+    dispatch({ type: START_GAME, payload: boardAfterFirstOpen });
   } else {
     const updatedBoard = board;
     if (updatedBoard[id].isMined) {
       updatedBoard[id].isOpen = true;
-      dispatch({ type: GAME_OVER, payload: updatedBoard });
+      const safeMines = Object.keys(updatedBoard).filter((key) => {
+        return (
+          updatedBoard[key].isMined === true &&
+          updatedBoard[key].isFlagged === true
+        );
+      });
+      dispatch({
+        type: GAME_OVER,
+        payload: { board: updatedBoard, safeMines: safeMines.length },
+      });
     } else {
       const opensBoard = recursionOpen(updatedBoard, id);
-
       dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
     }
   }
@@ -109,6 +90,12 @@ export const cellRightClick = (id) => (dispatch, getState) => {
       dispatch({ type: FLAGS_DECREMENT });
     }
   }
-
   dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
+};
+
+export const setGameOverTime = (time) => {
+  return {
+    type: SET_GAME_OVER_TIME,
+    payload: time,
+  };
 };

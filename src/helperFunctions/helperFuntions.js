@@ -38,3 +38,38 @@ export const recursionOpen = (board, id) => {
   }
   return board;
 };
+
+export const findCountMined = (pseudoArray) => {
+  const count = Object.keys(pseudoArray).filter((key) => {
+    return pseudoArray[key].isMined;
+  });
+  return count.length;
+};
+
+
+export const setNeighbors = (pseudoArray) => {
+  Object.keys(pseudoArray).forEach((item) => {
+    const { x, y } = pseudoArray[item];
+    const neighbors = [];
+    neighbors.push(`${x - 1}-${y - 1}`);
+    neighbors.push(`${x - 1}-${y}`);
+    neighbors.push(`${x - 1}-${y + 1}`);
+    neighbors.push(`${x}-${y - 1}`);
+    neighbors.push(`${x}-${y + 1}`);
+    neighbors.push(`${x + 1}-${y - 1}`);
+    neighbors.push(`${x + 1}-${y}`);
+    neighbors.push(`${x + 1}-${y + 1}`);
+    const filterNeigbours = neighbors.filter((coordId) => {
+      return pseudoArray[coordId] ? coordId : null;
+    });
+    const minesCount = filterNeigbours.reduce((acumulator, currentKey) => {
+      if (pseudoArray[currentKey].isMined) {
+        return acumulator + 1;
+      } else {
+        return acumulator;
+      }
+    }, 0);
+    pseudoArray[item].neighbors = filterNeigbours;
+    pseudoArray[item].neighborMineCount = minesCount;
+  });
+}
