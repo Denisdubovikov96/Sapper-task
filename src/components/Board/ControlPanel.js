@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useTimer from "../../helperFunctions/useTimer";
 import { setGameOverTime } from "../../store/sapper/actions";
 
@@ -17,29 +17,34 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ControlPanel() {
-  const { isStarted, isGameOver, flagsCount } = useSelector(
-    (state) => state.sapper
-  );
-  const [timer, setTimer] = useState(0);
-  const handlerTimer = () => {
-    setTimer((p) => p + 1);
-  };
-  const stopTimer = useTimer(handlerTimer, 1000, isStarted);
+export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
+  const { time, stop, start } = useTimer();
   const dispatch = useDispatch();
 
   const classes = useStyles();
 
   useEffect(() => {
     if (isGameOver) {
-      dispatch(setGameOverTime(timer));
+      stop();
+      dispatch(setGameOverTime(time));
     }
-    return stopTimer();
+    return () => {
+      stop();
+    };
   }, [isGameOver, dispatch]);
+
+  useEffect(() => {
+    if (isStarted) {
+      start();
+    }
+    return () => {
+      stop();
+    };
+  }, [isStarted]);
 
   return (
     <div className={classes.pannel}>
-      <span>{`${timer} sec`}</span>
+      <span>{`${time} sec`}</span>
       <span>{flagsCount}</span>
     </div>
   );

@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default (handler, interval, condition) => {
+export default () => {
+  const [time, setTime] = useState(0);
   const [intervalId, setIntervalId] = useState();
 
-  useEffect(() => {
-    if (condition) {
-      const id = setInterval(handler, interval);
-      setIntervalId(id);
-      return () => clearInterval(id);
-    }
-  }, [condition]);
-  return () => clearInterval(intervalId);
+  const start = () => {
+    const interval = setInterval(() => {
+      setTime((time) => time + 1);
+    }, 1000);
+    setIntervalId(interval);
+  };
+  const stop = () => {
+    clearInterval(intervalId);
+  };
+
+  return { time, start, stop };
 };

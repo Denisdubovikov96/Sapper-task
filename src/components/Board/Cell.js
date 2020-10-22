@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
 import { booom, bombIcon, flag, stopBoom } from "../../statik";
 
 const useStyles = makeStyles({
@@ -39,13 +38,12 @@ const useStyles = makeStyles({
   }),
 });
 
-export default function Cell({ item }) {
+export default function Cell({ item, isGameOver }) {
   const classes = useStyles({
     isMined: item.isMined,
     isOpen: item.isOpen,
     count: item.neighborMineCount,
   });
-  const { isGameOver } = useSelector((state) => state.sapper);
 
   const { neighborMineCount, isOpen, isMined, isFlagged, id } = item;
 

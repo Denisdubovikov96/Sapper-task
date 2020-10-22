@@ -79,6 +79,7 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
 export const cellRightClick = (id) => (dispatch, getState) => {
   const { board, flagsCount, boardMinesCount } = getState().sapper;
   const updatedBoard = { ...board };
+  const currentItem = updatedBoard[id];
 
   if (updatedBoard[id].isFlagged === true) {
     updatedBoard[id].isFlagged = false;

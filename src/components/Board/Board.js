@@ -55,7 +55,8 @@ export default function Board() {
     isGameOver,
     isGameWin,
     isStarted,
-  } = useSelector((state) => state.sapper);
+    flagsCount,
+  } = useSelector(({ sapper }) => sapper);
   const dispatch = useDispatch();
 
   const classes = useStyles({ size: gameSize });
@@ -66,11 +67,7 @@ export default function Board() {
     if (!board[id]) {
       return;
     }
-    if (isGameOver) {
-      return;
-    } else if (board[id].isOpen) {
-      return;
-    } else if (isStarted) {
+    if (!isGameOver && !board[id].isOpen && isStarted) {
       dispatch(cellRightClick(id));
     }
   };
@@ -79,25 +76,31 @@ export default function Board() {
     if (!board[id]) {
       return;
     }
-    if (isGameOver) {
-      return;
-    } else if (board[id].isOpen) {
-      return;
-    } else {
+    if (!isGameOver && !board[id].isOpen) {
       dispatch(cellLeftClick(id));
     }
   };
 
   return (
     <div className={classes.game}>
-      <ControlPanel />
+      <ControlPanel
+        isStarted={isStarted}
+        isGameOver={isGameOver}
+        flagsCount={flagsCount}
+      />
       <div
         className={classes.board}
         onClick={(e) => handlerLeftClick(e)}
         onContextMenu={(e) => handlerRightClick(e)}
       >
         {Object.keys(board).map((key) => {
-          return <Cell key={board[key].id} item={board[key]} />;
+          return (
+            <Cell
+              key={board[key].id}
+              item={board[key]}
+              isGameOver={isGameOver}
+            />
+          );
         })}
       </div>
       {isGameOver ? (
