@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cell from "./Cell";
 import ControlPanel from "./ControlPanel";
+import { cellLeftClick, cellRightClick } from "../../store/sapper/actions";
 
 const useStyles = makeStyles({
   board: (props) => ({
@@ -47,23 +48,61 @@ const useStyles = makeStyles({
 });
 
 export default function Board() {
-  const { board, gameSize, score, isGameOver } = useSelector(
-    (state) => state.sapper
-  );
+  const {
+    board,
+    gameSize,
+    score,
+    isGameOver,
+    isGameWin,
+    isStarted,
+  } = useSelector((state) => state.sapper);
+  const dispatch = useDispatch();
 
   const classes = useStyles({ size: gameSize });
+
+  const handlerRightClick = (e) => {
+    e.preventDefault();
+    let id = e.target.closest("div").dataset.id;
+    if (!board[id]) {
+      return;
+    }
+    if (isGameOver) {
+      return;
+    } else if (board[id].isOpen) {
+      return;
+    } else if (isStarted) {
+      dispatch(cellRightClick(id));
+    }
+  };
+  const handlerLeftClick = (e) => {
+    let id = e.target.closest("div").dataset.id;
+    if (!board[id]) {
+      return;
+    }
+    if (isGameOver) {
+      return;
+    } else if (board[id].isOpen) {
+      return;
+    } else {
+      dispatch(cellLeftClick(id));
+    }
+  };
 
   return (
     <div className={classes.game}>
       <ControlPanel />
-      <div className={classes.board}>
+      <div
+        className={classes.board}
+        onClick={(e) => handlerLeftClick(e)}
+        onContextMenu={(e) => handlerRightClick(e)}
+      >
         {Object.keys(board).map((key) => {
           return <Cell key={board[key].id} item={board[key]} />;
         })}
       </div>
       {isGameOver ? (
         <div className={classes.resultPannel}>
-          <h2>Ваш результат</h2>
+          <h2>{`Ваш результат ${isGameWin ? "Победа" : "Поражение"}`}</h2>
           <div>
             <span>{`Время: ${score.time} sec`}</span>
             <span>{`Обезвреженые мины: ${score.safeMines}`}</span>

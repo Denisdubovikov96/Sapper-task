@@ -4,6 +4,7 @@ import {
   CREATE_BOARD,
   CELL_LEFT_CLICK,
   GAME_OVER,
+  GAME_WIN,
   CELL_RIGHT_CLICK,
   FLAGS_DECREMENT,
   FLAGS_INCREMENT,
@@ -14,7 +15,7 @@ const initialState = {
   board: {},
   gameSize: 16,
   isStarted: false,
-  boardMinesCount: 40,
+  boardMinesCount: 3,
   isGameOver: false,
   flagsCount: 0,
   isGameWin: null,
@@ -57,8 +58,16 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isGameOver: true,
+        isGameWin: false,
         board: payload.board,
         score: { ...state.score, safeMines: payload.safeMines },
+      };
+    case GAME_WIN:
+      return {
+        ...state,
+        isGameOver: true,
+        isGameWin: true,
+        score: { ...state.score, safeMines: payload },
       };
     case SET_GAME_OVER_TIME:
       return {

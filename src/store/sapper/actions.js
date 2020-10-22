@@ -14,6 +14,7 @@ import {
   FLAGS_DECREMENT,
   FLAGS_INCREMENT,
   SET_GAME_OVER_TIME,
+  GAME_WIN,
 } from "./actionTypes";
 
 export const initGame = (gameSize) => {
@@ -76,20 +77,35 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
 };
 
 export const cellRightClick = (id) => (dispatch, getState) => {
-  const { board, flagsCount } = getState().sapper;
+  const { board, flagsCount, boardMinesCount } = getState().sapper;
   const updatedBoard = { ...board };
 
   if (updatedBoard[id].isFlagged === true) {
     updatedBoard[id].isFlagged = false;
     dispatch({ type: FLAGS_INCREMENT });
+    dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
   } else {
     if (flagsCount - 1 < 0) {
     } else {
       updatedBoard[id].isFlagged = true;
       dispatch({ type: FLAGS_DECREMENT });
+      dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
+      const {
+        flagsCount: countAfterUpdate,
+        board: boardAfterUpdate,
+      } = getState().sapper;
+      if (countAfterUpdate === 0) {
+        const safeMines = Object.keys(boardAfterUpdate).filter((key) => {
+          return (
+            boardAfterUpdate[key].isMined && boardAfterUpdate[key].isFlagged
+          );
+        });
+        if (safeMines.length === boardMinesCount) {
+          dispatch({ type: GAME_WIN, payload: safeMines.length });
+        }
+      }
     }
   }
-  dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
 };
 
 export const setGameOverTime = (time) => {

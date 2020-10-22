@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     dispatch(createBoard());
-  }, []);
+  }, [dispatch]);
   return (
     <div className="sapper">
       <Board />

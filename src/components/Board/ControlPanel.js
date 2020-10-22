@@ -35,7 +35,7 @@ export default function ControlPanel() {
       dispatch(setGameOverTime(timer));
     }
     return stopTimer();
-  }, [isGameOver]);
+  }, [isGameOver, dispatch]);
 
   return (
     <div className={classes.pannel}>

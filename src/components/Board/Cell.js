@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { cellLeftClick, cellRightClick } from "../../store/sapper/actions";
-import { booom, bombIcon, flag, stomBoob } from "../../statik";
+import { useSelector } from "react-redux";
+import { booom, bombIcon, flag, stopBoom } from "../../statik";
 
 const useStyles = makeStyles({
   cell: (props) => ({
@@ -46,62 +45,32 @@ export default function Cell({ item }) {
     isOpen: item.isOpen,
     count: item.neighborMineCount,
   });
-  const { isGameOver, isStarted } = useSelector((state) => state.sapper);
+  const { isGameOver } = useSelector((state) => state.sapper);
 
-  const dispatch = useDispatch();
-
-  const { neighborMineCount, isOpen, isMined, isFlagged } = item;
-
-  const handlerLeftClick = (id) => {
-    if (isGameOver) {
-      return;
-    } else if (isOpen) {
-      return;
-    } else {
-      dispatch(cellLeftClick(id));
-    }
-  };
-
-  const handlerRightClick = (e, id) => {
-    e.preventDefault();
-    if (isGameOver) {
-      return;
-    } else if (isOpen) {
-      return;
-    } else if (isStarted) {
-      dispatch(cellRightClick(id));
-    }
-  };
+  const { neighborMineCount, isOpen, isMined, isFlagged, id } = item;
 
   if (isMined && isGameOver) {
     return (
-      <div className={classes.cell}>
+      <div data-id={id} className={classes.cell}>
         {isOpen ? (
           <img src={booom} alt="aa" />
         ) : isMined && isFlagged ? (
-          <img src={stomBoob} alt="aa" />
+          <img src={stopBoom} alt="aa" />
         ) : (
           <img src={bombIcon} alt="aa" />
         )}
       </div>
     );
-  } else if (isFlagged) {
-    return (
-      <div
-        className={classes.cell}
-        onContextMenu={(e) => handlerRightClick(e, item.id)}
-      >
-        <img src={flag} alt="aa" />
-      </div>
-    );
   } else {
     return (
-      <div
-        className={classes.cell}
-        onClick={() => handlerLeftClick(item.id)}
-        onContextMenu={(e) => handlerRightClick(e, item.id)}
-      >
-        {isOpen ? (neighborMineCount !== 0 ? neighborMineCount : null) : null}
+      <div data-id={id} className={classes.cell}>
+        {isOpen ? (
+          neighborMineCount !== 0 ? (
+            neighborMineCount
+          ) : null
+        ) : isFlagged ? (
+          <img src={flag} alt="aa" />
+        ) : null}
       </div>
     );
   }
