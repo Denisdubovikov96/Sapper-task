@@ -8,3 +8,4 @@ export const GAME_WIN = "GAME_WIN";
 export const SET_GAME_OVER_TIME = "SET_GAME_OVER_TIME";
 export const FLAGS_INCREMENT = "FLAGS_INCREMENT";
 export const FLAGS_DECREMENT = "FLAGS_DECREMENT";
+export const TOGLE_FLAG = "TOGLE_FLAG";

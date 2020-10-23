@@ -46,8 +46,7 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
         0,
         gameSize - 1
       )}`;
-      if (randomId === id) {
-      } else if (!boardWithMines[randomId].isMined) {
+      if (!boardWithMines[randomId].isMined && randomId !== id) {
         boardWithMines[randomId].isMined = true;
         i++;
       }
@@ -81,16 +80,23 @@ export const cellRightClick = (id) => (dispatch, getState) => {
   const updatedBoard = { ...board };
   const currentItem = updatedBoard[id];
 
-  if (updatedBoard[id].isFlagged === true) {
-    updatedBoard[id].isFlagged = false;
-    dispatch({ type: FLAGS_INCREMENT });
-    dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
+  if (currentItem.isFlagged === true) {
+    dispatch({
+      type: CELL_RIGHT_CLICK,
+      payload: {
+        cell: { [id]: { ...currentItem, isFlagged: false } },
+        flagsCount: flagsCount + 1,
+      },
+    });
   } else {
-    if (flagsCount - 1 < 0) {
-    } else {
-      updatedBoard[id].isFlagged = true;
-      dispatch({ type: FLAGS_DECREMENT });
-      dispatch({ type: CELL_RIGHT_CLICK, payload: updatedBoard });
+    if (flagsCount >= 1) {
+      dispatch({
+        type: CELL_RIGHT_CLICK,
+        payload: {
+          cell: { [id]: { ...currentItem, isFlagged: true } },
+          flagsCount: flagsCount - 1,
+        },
+      });
       const {
         flagsCount: countAfterUpdate,
         board: boardAfterUpdate,

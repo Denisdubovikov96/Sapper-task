@@ -23,6 +23,26 @@ const useStyles = makeStyles({
     boxShadow: "4px 4px 15px 0px rgba(0,0,0,0.45)",
     color: "#3f51b5",
   }),
+  cell: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "1px solid white",
+    borderRadius: 4,
+    transition: "all 0.1s linear",
+    overflow: "hidden",
+    boxShadow: "0px 0px 15px 0px white",
+    fontSize: 14,
+    fontWeight: 900,
+    "&:hover": {
+      cursor: "pointer",
+    },
+    "&>img": {
+      width: 22,
+      height: 22,
+      zIndex: 1000,
+    },
+  },
   pannel: {
     width: "100%",
     minHeight: 50,
@@ -99,6 +119,7 @@ export default function Board() {
               key={board[key].id}
               item={board[key]}
               isGameOver={isGameOver}
+              cellClassName={classes.cell}
             />
           );
         })}
