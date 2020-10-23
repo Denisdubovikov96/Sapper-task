@@ -52,6 +52,7 @@ const useStyles = makeStyles({
     "&:hover": {
       boxShadow: "0px 0px 15px 0px white",
       background: "#cfd8dc",
+      cursor: "default",
     },
   },
   pannel: {
@@ -95,7 +96,7 @@ export default function Board() {
     dispatch(createBoard());
   }, [dispatch]);
 
-  const classes = useStyles({ size: gameSize });
+  const classes = useStyles({ size: gameSize, isGameOver: isGameOver });
 
   const handlerRightClick = (e) => {
     e.preventDefault();
