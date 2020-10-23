@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-around",
     fontSize: 24,
-    fontWeight: 600,
+    fontWeight: 100,
   },
 });
 
@@ -30,6 +30,7 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     return () => {
       stop();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameOver]);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     return () => {
       stop();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStarted]);
 
   return (
