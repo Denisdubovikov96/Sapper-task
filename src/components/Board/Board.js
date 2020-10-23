@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     transition: "all 0.1s linear",
     overflow: "hidden",
     boxShadow: "0px 0px 15px 0px white",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 900,
     "&:hover": {
       boxShadow: "3px 3px 8px 0px black",

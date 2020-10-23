@@ -13,6 +13,10 @@ export default function Cell({ item, isGameOver, cellClassNames }) {
       case 3:
         return "#ef6c00";
       case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
         return "#ff3d00";
       default:
         return "white";
