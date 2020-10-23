@@ -20,7 +20,6 @@ const useStyles = makeStyles({
 export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
   const { time, stop, start } = useTimer();
   const dispatch = useDispatch();
-
   const classes = useStyles();
 
   useEffect(() => {

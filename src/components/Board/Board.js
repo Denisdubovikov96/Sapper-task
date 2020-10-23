@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Cell from "./Cell";
 import ControlPanel from "./ControlPanel";
 import { cellLeftClick, cellRightClick } from "../../store/sapper/actions";
+import { createBoard } from "../../store/sapper/actions";
 
 const useStyles = makeStyles({
   board: (props) => ({
@@ -24,23 +25,33 @@ const useStyles = makeStyles({
     color: "#3f51b5",
   }),
   cell: {
+    background: "#ffe082",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     border: "1px solid white",
     borderRadius: 4,
-    transition: "all 0.1s linear",
+    transition: "box-shadow background 0.1s 0.1s linear",
     overflow: "hidden",
     boxShadow: "0px 0px 15px 0px white",
     fontSize: 14,
     fontWeight: 900,
     "&:hover": {
+      boxShadow: "3px 3px 8px 0px black",
+      background: "white",
       cursor: "pointer",
     },
     "&>img": {
       width: 22,
       height: 22,
       zIndex: 1000,
+    },
+  },
+  cellOpen: {
+    background: "#cfd8dc",
+    "&:hover": {
+      boxShadow: "0px 0px 15px 0px white",
+      background: "#cfd8dc",
     },
   },
   pannel: {
@@ -79,6 +90,10 @@ export default function Board() {
   } = useSelector(({ sapper }) => sapper);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(createBoard());
+  }, [dispatch]);
+
   const classes = useStyles({ size: gameSize });
 
   const handlerRightClick = (e) => {
@@ -96,11 +111,10 @@ export default function Board() {
     if (!board[id]) {
       return;
     }
-    if (!isGameOver && !board[id].isOpen) {
+    if (!isGameOver && !board[id].isOpen && !board[id].isFlagged) {
       dispatch(cellLeftClick(id));
     }
   };
-
   return (
     <div className={classes.game}>
       <ControlPanel
@@ -119,7 +133,10 @@ export default function Board() {
               key={board[key].id}
               item={board[key]}
               isGameOver={isGameOver}
-              cellClassName={classes.cell}
+              cellClassNames={{
+                cell: classes.cell,
+                cellOpen: classes.cellOpen,
+              }}
             />
           );
         })}
