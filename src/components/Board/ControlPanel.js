@@ -31,7 +31,7 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     return () => {
       stop();
     };
-  }, [isGameOver, dispatch]);
+  }, [isGameOver]);
 
   useEffect(() => {
     if (isStarted) {

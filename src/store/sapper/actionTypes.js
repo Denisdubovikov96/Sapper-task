@@ -6,6 +6,3 @@ export const CELL_RIGHT_CLICK = "CELL_RIGHT_CLICK";
 export const GAME_OVER = "GAME_OVER";
 export const GAME_WIN = "GAME_WIN";
 export const SET_GAME_OVER_TIME = "SET_GAME_OVER_TIME";
-export const FLAGS_INCREMENT = "FLAGS_INCREMENT";
-export const FLAGS_DECREMENT = "FLAGS_DECREMENT";
-export const TOGLE_FLAG = "TOGLE_FLAG";
