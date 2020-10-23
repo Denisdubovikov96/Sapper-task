@@ -23,7 +23,11 @@ export default function Cell({ item, isGameOver, cellClassNames }) {
       <div
         data-id={id}
         className={cls}
-        style={{ color: fontColor(neighborMineCount) }}
+        style={{
+          color: fontColor(neighborMineCount),
+          background:
+            isMined && isOpen ? "#d32f2f" : isMined && isFlagged ? "white" : "",
+        }}
       >
         {isOpen ? (
           <img src={booom} alt="aa" />

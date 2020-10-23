@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-around",
     fontSize: 24,
-    fontWeight: 100,
+    fontWeight: 400,
   },
 });
 

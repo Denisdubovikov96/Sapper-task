@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     border: "1px solid white",
     borderRadius: 4,
-    transition: "box-shadow background 0.1s 0.1s linear",
+    transition: "all 0.1s linear",
     overflow: "hidden",
     boxShadow: "0px 0px 15px 0px white",
     fontSize: 14,
@@ -65,10 +65,11 @@ const useStyles = makeStyles({
   resultPannel: {
     borderTop: "2px solid #bdbdbd",
     fontSize: 18,
-    fontWeight: 600,
+    fontWeight: 500,
     "&>h2": {
       margin: 8,
       textAlign: "center",
+      fontWeight: 700,
     },
     "&>div": {
       margin: 12,

@@ -13,7 +13,7 @@ const initialState = {
   board: {},
   gameSize: 15,
   isStarted: false,
-  boardMinesCount: 10,
+  boardMinesCount: 5,
   isGameOver: false,
   flagsCount: 0,
   isGameWin: null,
