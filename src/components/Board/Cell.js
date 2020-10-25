@@ -28,9 +28,11 @@ export default function Cell({ item, isGameOver, cellClassNames }) {
         data-id={id}
         className={cls}
         style={{
-          color: fontColor(neighborMineCount),
           background:
             isMined && isOpen ? "#d32f2f" : isMined && isFlagged ? "white" : "",
+          boxShadow: isMined && isOpen ? "0px 0px 15px 3px #d32f2f" : "",
+          zIndex: isMined && isOpen ? 100 : "",
+          border: isMined && isOpen ? "none" : "",
         }}
       >
         {isOpen ? (

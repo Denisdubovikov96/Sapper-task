@@ -7,6 +7,18 @@ import { cellLeftClick, cellRightClick } from "../../store/sapper/actions";
 import { createBoard } from "../../store/sapper/actions";
 
 const useStyles = makeStyles({
+  game: (props) => ({
+    background: "white",
+    margin: "20px auto",
+    width: `calc(${props.size * 40}px + 4px)`,
+    border: "2px solid #bdbdbd",
+    borderRadius: 5,
+    boxShadow: "4px 4px 15px 0px rgba(0,0,0,0.45)",
+    color: "#3f51b5",
+    userSelect: "none",
+    position: "relative",
+    zIndex: 1,
+  }),
   board: (props) => ({
     width: `${props.size * 40}px`,
     height: `${props.size * 40}px`,
@@ -14,17 +26,13 @@ const useStyles = makeStyles({
     padding: 2,
     gridTemplateColumns: `repeat(${props.size}, 1fr)`,
     gridTemplateRows: `repeat(${props.size}, 1fr)`,
-  }),
-  game: (props) => ({
-    margin: "20px auto",
-    width: `calc(${props.size * 40}px + 4px)`,
-    border: "2px solid #bdbdbd",
-    borderRadius: 5,
+    borderTop: "2px solid #bdbdbd",
+    background: "white",
     overflow: "hidden",
-    boxShadow: "4px 4px 15px 0px rgba(0,0,0,0.45)",
-    color: "#3f51b5",
+    zIndex: 100,
   }),
   cell: {
+    zIndex: 1000,
     background: "#ffe082",
     display: "flex",
     alignItems: "center",
