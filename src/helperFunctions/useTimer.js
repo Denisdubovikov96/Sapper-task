@@ -12,6 +12,7 @@ export default () => {
   };
   const stop = () => {
     clearInterval(intervalId);
+    setTime(0);
   };
 
   return { time, start, stop };

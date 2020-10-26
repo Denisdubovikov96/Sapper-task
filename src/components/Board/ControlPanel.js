@@ -72,8 +72,8 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
 
   useEffect(() => {
     if (isGameOver) {
-      stop();
       dispatch(setGameOverTime(time));
+      stop();
     }
     return () => {
       stop();
