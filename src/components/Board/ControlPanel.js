@@ -24,10 +24,13 @@ const useStyles = makeStyles({
     marginLeft: 20,
   },
   menuButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     background: "#ffe082",
     border: "2px solid #3f51b5",
-    width: 35,
-    height: 35,
+    width: 36,
+    height: 36,
     borderRadius: 4,
     fontSize: 20,
     color: "#3f51b5",
@@ -54,7 +57,7 @@ const useStyles = makeStyles({
     transition: "all 0.3s linear",
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
-    opacity: 1,
+    opacity: 0,
     "&$expanded": {
       zIndex: -1,
       left: "-50px",
@@ -84,6 +87,7 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
   useEffect(() => {
     if (isStarted) {
       start();
+      setIsExpanded(false);
     }
     return () => {
       stop();

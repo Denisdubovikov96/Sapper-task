@@ -40,13 +40,24 @@ const useStyles = makeStyles({
       justifyContent: "center",
       position: "absolute",
       fontSize: 50,
+      fontWeight: 600,
       top: 0,
       left: 0,
       width: "100%",
       height: "100%",
       zIndex: 10000,
-      background: "rgba(184, 184, 184, 0.7)",
+      color: "white",
+      background: "rgba(0, 0, 0, 0.66)",
       content: "'Game Over'",
+      animation: "$scale 0.4s linear both",
+    },
+  },
+  "@keyframes scale": {
+    from: {
+      transform: "scale(0.1)",
+    },
+    to: {
+      transform: "scale(1)",
     },
   },
   cell: {
@@ -107,7 +118,7 @@ export default function Board() {
     dispatch(createBoard());
   }, [dispatch, gameSize]);
 
-  const classes = useStyles({ size: gameSize, isGameOver: isGameOver });
+  const classes = useStyles({ size: gameSize });
 
   const handlerRightClick = (e) => {
     e.preventDefault();
