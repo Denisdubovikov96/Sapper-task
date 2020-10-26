@@ -47,7 +47,7 @@ export const createBoard = () => (dispatch, getState) => {
 export const cellLeftClick = (id) => (dispatch, getState) => {
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
-    const boardWithMines = { ...board };
+    const boardWithMines = JSON.parse(JSON.stringify(board));
     boardWithMines[id].isOpen = true;
     let i = 0;
     do {
@@ -64,14 +64,11 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
     const boardAfterFirstOpen = recursionOpen(boardWithMines, id);
     dispatch({ type: START_GAME, payload: boardAfterFirstOpen });
   } else {
-    const updatedBoard = { ...board };
+    const updatedBoard = JSON.parse(JSON.stringify(board));
     if (updatedBoard[id].isMined) {
       updatedBoard[id].isOpen = true;
       const safeMines = Object.keys(updatedBoard).filter((key) => {
-        return (
-          updatedBoard[key].isMined === true &&
-          updatedBoard[key].isFlagged === true
-        );
+        return updatedBoard[key].isMined && updatedBoard[key].isFlagged;
       });
       dispatch({
         type: GAME_OVER,
@@ -86,10 +83,9 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
 
 export const cellRightClick = (id) => (dispatch, getState) => {
   const { board, flagsCount, boardMinesCount } = getState().sapper;
-  const updatedBoard = { ...board };
+  const updatedBoard = JSON.parse(JSON.stringify(board));
   const currentItem = updatedBoard[id];
-
-  if (currentItem.isFlagged === true) {
+  if (currentItem.isFlagged) {
     dispatch({
       type: CELL_RIGHT_CLICK,
       payload: {

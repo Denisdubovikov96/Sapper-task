@@ -139,6 +139,21 @@ export default function Board() {
       dispatch(cellLeftClick(id));
     }
   };
+  const renderedCells = (cells) => {
+    return Object.keys(cells).map((key) => {
+      return (
+        <Cell
+          key={board[key].id}
+          item={board[key]}
+          isGameOver={isGameOver}
+          cellClassNames={{
+            cell: classes.cell,
+            cellOpen: classes.cellOpen,
+          }}
+        />
+      );
+    });
+  };
   return (
     <div className={classes.game}>
       <ControlPanel
@@ -151,19 +166,7 @@ export default function Board() {
         onClick={(e) => handlerLeftClick(e)}
         onContextMenu={(e) => handlerRightClick(e)}
       >
-        {Object.keys(board).map((key) => {
-          return (
-            <Cell
-              key={board[key].id}
-              item={board[key]}
-              isGameOver={isGameOver}
-              cellClassNames={{
-                cell: classes.cell,
-                cellOpen: classes.cellOpen,
-              }}
-            />
-          );
-        })}
+        {renderedCells(board)}
       </div>
       {isGameOver ? <RezultPannel isGameWin={isGameWin} score={score} /> : null}
     </div>
