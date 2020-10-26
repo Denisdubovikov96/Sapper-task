@@ -7,6 +7,7 @@ import {
   GAME_WIN,
   CELL_RIGHT_CLICK,
   SET_GAME_OVER_TIME,
+  RESTART_GAME,
 } from "./actionTypes";
 
 const initialState = {
@@ -31,7 +32,16 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
         board: {},
         gameSize: payload,
         isStarted: false,
-        boardMinesCount: payload * 3,
+        boardMinesCount: payload * 2,
+        isGameOver: false,
+        flagsCount: 0,
+        isGameWin: null,
+      };
+    case RESTART_GAME:
+      return {
+        ...state,
+        board: {},
+        isStarted: false,
         isGameOver: false,
         flagsCount: 0,
         isGameWin: null,

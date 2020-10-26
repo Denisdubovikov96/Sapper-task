@@ -5,6 +5,7 @@ import Cell from "./Cell";
 import ControlPanel from "./ControlPanel";
 import { cellLeftClick, cellRightClick } from "../../store/sapper/actions";
 import { createBoard } from "../../store/sapper/actions";
+import RezultPannel from "./RezultPannel";
 
 const useStyles = makeStyles({
   game: (props) => ({
@@ -71,21 +72,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-around",
   },
-  resultPannel: {
-    borderTop: "2px solid #bdbdbd",
-    fontSize: 18,
-    fontWeight: 500,
-    "&>h2": {
-      margin: 8,
-      textAlign: "center",
-      fontWeight: 700,
-    },
-    "&>div": {
-      margin: 12,
-      display: "flex",
-      justifyContent: "space-between",
-    },
-  },
 });
 
 export default function Board() {
@@ -151,15 +137,7 @@ export default function Board() {
           );
         })}
       </div>
-      {isGameOver ? (
-        <div className={classes.resultPannel}>
-          <h2>{`Ваш результат ${isGameWin ? "Победа" : "Поражение"}`}</h2>
-          <div>
-            <span>{`Время: ${score.time} sec`}</span>
-            <span>{`Обезвреженые мины: ${score.safeMines}`}</span>
-          </div>
-        </div>
-      ) : null}
+      {isGameOver ? <RezultPannel isGameWin={isGameWin} score={score} /> : null}
     </div>
   );
 }

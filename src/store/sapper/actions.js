@@ -22,6 +22,12 @@ export const initGame = (gameSize) => {
   };
 };
 
+export const restart = () => (dispatch, getState) => {
+  const { gameSize } = getState().sapper;
+  dispatch(initGame(gameSize));
+  dispatch(createBoard());
+};
+
 export const createBoard = () => (dispatch, getState) => {
   const gameSize = getState().sapper.gameSize;
   const board = {};
