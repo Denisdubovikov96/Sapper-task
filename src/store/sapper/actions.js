@@ -22,6 +22,11 @@ export const initGame = (gameSize) => {
   };
 };
 
+export const changeGameLvl = (gameSize) => (dispatch) => {
+  dispatch(initGame(gameSize));
+  dispatch(createBoard());
+};
+
 export const restart = () => (dispatch, getState) => {
   const { gameSize } = getState().sapper;
   dispatch(initGame(gameSize));

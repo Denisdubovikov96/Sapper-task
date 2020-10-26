@@ -116,7 +116,7 @@ export default function Board() {
 
   useEffect(() => {
     dispatch(createBoard());
-  }, [dispatch, gameSize]);
+  }, []);
 
   const classes = useStyles({ size: gameSize });
 

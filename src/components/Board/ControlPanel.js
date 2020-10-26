@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import useTimer from "../../helperFunctions/useTimer";
-import { initGame, setGameOverTime, restart } from "../../store/sapper/actions";
+import {
+  initGame,
+  setGameOverTime,
+  restart,
+  changeGameLvl,
+} from "../../store/sapper/actions";
 import { useState } from "react";
 
 const useStyles = makeStyles({
@@ -125,19 +130,19 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
           <i className="fas fa-sync-alt" />
         </button>
         <button
-          onClick={() => dispatch(initGame(10))}
+          onClick={() => dispatch(changeGameLvl(10))}
           className={classes.menuButton}
         >
           S
         </button>
         <button
-          onClick={() => dispatch(initGame(15))}
+          onClick={() => dispatch(changeGameLvl(15))}
           className={classes.menuButton}
         >
           M
         </button>
         <button
-          onClick={() => dispatch(initGame(20))}
+          onClick={() => dispatch(changeGameLvl(20))}
           className={classes.menuButton}
         >
           B
