@@ -102,7 +102,7 @@ export default function Board() {
 
   useEffect(() => {
     dispatch(createBoard());
-  }, [dispatch]);
+  }, [dispatch, gameSize]);
 
   const classes = useStyles({ size: gameSize, isGameOver: isGameOver });
 

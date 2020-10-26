@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import useTimer from "../../helperFunctions/useTimer";
-import { setGameOverTime } from "../../store/sapper/actions";
+import { initGame, setGameOverTime } from "../../store/sapper/actions";
 import { useState } from "react";
 
 const useStyles = makeStyles({
@@ -20,19 +20,35 @@ const useStyles = makeStyles({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
+    marginLeft: 20,
   },
   menuButton: {
-    background: "blue",
-    border: "2px solid lightblue",
+    background: "#ffe082",
+    border: "2px solid #3f51b5",
+    width: 35,
+    height: 35,
+    borderRadius: 4,
+    fontSize: 20,
+    color: "#3f51b5",
+    transition: "all 0.2s linear",
+    cursor: "pointer",
+    "&:hover": {
+      background: "#3f51b5",
+      color: "#fff",
+    },
   },
   controlButtons: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    padding: 5,
     zIndex: -1,
     position: "absolute",
     top: "50px",
     left: "0px",
     background: "#fff",
-    width: 40,
+    width: 50,
     height: 200,
     border: "2px solid #bdbdbd",
     transition: "all 0.3s linear",
@@ -41,7 +57,7 @@ const useStyles = makeStyles({
     opacity: 1,
     "&$expanded": {
       zIndex: -1,
-      left: "-44px",
+      left: "-50px",
       opacity: 1,
     },
   },
@@ -83,7 +99,11 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
           setIsExpanded(!isExpanded);
         }}
       >
-        Click
+        {isExpanded ? (
+          <i className="fas fa-compress-arrows-alt" />
+        ) : (
+          <i className="fas fa-expand-arrows-alt" />
+        )}
       </button>
       <div className={classes.controllers}>
         <span>{`${time} sec`}</span>
@@ -93,7 +113,26 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
         className={`${classes.controlButtons} ${
           isExpanded ? classes.expanded : ""
         }`}
-      ></div>
+      >
+        <button
+          onClick={() => dispatch(initGame(10))}
+          className={classes.menuButton}
+        >
+          S
+        </button>
+        <button
+          onClick={() => dispatch(initGame(15))}
+          className={classes.menuButton}
+        >
+          M
+        </button>
+        <button
+          onClick={() => dispatch(initGame(20))}
+          className={classes.menuButton}
+        >
+          B
+        </button>
+      </div>
     </div>
   );
 }

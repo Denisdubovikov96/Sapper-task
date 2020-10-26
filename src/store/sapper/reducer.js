@@ -28,6 +28,7 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
     case INIT_GAME:
       return {
         ...state,
+        board: {},
         gameSize: payload,
         isStarted: false,
         boardMinesCount: payload * 3,
