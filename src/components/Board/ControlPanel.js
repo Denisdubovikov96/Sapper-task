@@ -91,8 +91,6 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStarted]);
 
-  const onRestart = () => {};
-
   return (
     <div className={classes.pannel}>
       <button

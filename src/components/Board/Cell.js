@@ -31,7 +31,7 @@ export default function Cell({ item, isGameOver, cellClassNames }) {
           background:
             isMined && isOpen ? "#d32f2f" : isMined && isFlagged ? "white" : "",
           boxShadow: isMined && isOpen ? "0px 0px 15px 3px #d32f2f" : "",
-          zIndex: isMined && isOpen ? 10000 : "",
+          zIndex: isMined && isOpen ? 1500 : "",
           border: isMined && isOpen ? "none" : "",
         }}
       >

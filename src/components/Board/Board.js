@@ -31,7 +31,24 @@ const useStyles = makeStyles({
     background: "white",
     overflow: "hidden",
     zIndex: 100,
+    position: "relative",
   }),
+  overlay: {
+    "&:before": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "absolute",
+      fontSize: 50,
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      zIndex: 10000,
+      background: "rgba(184, 184, 184, 0.7)",
+      content: "'Game Over'",
+    },
+  },
   cell: {
     zIndex: 1000,
     background: "#ffe082",
@@ -107,7 +124,7 @@ export default function Board() {
     if (!board[id]) {
       return;
     }
-    if (!isGameOver && !board[id].isOpen && !board[id].isFlagged) {
+    if (!isGameOver && !!board[id]) {
       dispatch(cellLeftClick(id));
     }
   };
@@ -119,7 +136,7 @@ export default function Board() {
         flagsCount={flagsCount}
       />
       <div
-        className={classes.board}
+        className={`${classes.board} ${isGameOver ? classes.overlay : ""}`}
         onClick={(e) => handlerLeftClick(e)}
         onContextMenu={(e) => handlerRightClick(e)}
       >
