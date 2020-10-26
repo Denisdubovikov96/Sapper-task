@@ -49,12 +49,12 @@ const useStyles = makeStyles({
       color: "white",
       background: "rgba(0, 0, 0, 0.66)",
       content: "'Game Over'",
-      animation: "$scale 0.4s linear both",
+      animation: "$scale 0.3s linear both",
     },
   },
   "@keyframes scale": {
     from: {
-      transform: "scale(0.1)",
+      transform: "scale(0.01)",
     },
     to: {
       transform: "scale(1)",
@@ -116,7 +116,7 @@ export default function Board() {
 
   useEffect(() => {
     dispatch(createBoard());
-  }, []);
+  }, [dispatch]);
 
   const classes = useStyles({ size: gameSize });
 

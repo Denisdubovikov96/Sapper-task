@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import useTimer from "../../helperFunctions/useTimer";
 import {
-  initGame,
   setGameOverTime,
   restart,
   changeGameLvl,
@@ -93,6 +92,8 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     if (isStarted) {
       start();
       setIsExpanded(false);
+    } else {
+      stop();
     }
     return () => {
       stop();
