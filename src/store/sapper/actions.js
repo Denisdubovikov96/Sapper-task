@@ -23,17 +23,24 @@ export const initGame = (gameSize) => {
 };
 
 export const changeGameLvl = (gameSize) => (dispatch) => {
+  let time1 = performance.now();
   dispatch(initGame(gameSize));
   dispatch(createBoard());
+  let time2 = performance.now();
+  console.log("change lvl", time2 - time1);
 };
 
 export const restart = () => (dispatch, getState) => {
+  let time1 = performance.now();
   const { gameSize } = getState().sapper;
   dispatch(initGame(gameSize));
   dispatch(createBoard());
+  let time2 = performance.now();
+  console.log("restart", time2 - time1);
 };
 
 export const createBoard = () => (dispatch, getState) => {
+  let time1 = performance.now();
   const gameSize = getState().sapper.gameSize;
   const board = {};
   for (let x = 0; x < gameSize; x++) {
@@ -42,9 +49,12 @@ export const createBoard = () => (dispatch, getState) => {
     }
   }
   dispatch({ type: CREATE_BOARD, payload: board });
+  let time2 = performance.now();
+  console.log("create board", time2 - time1);
 };
 
 export const cellLeftClick = (id) => (dispatch, getState) => {
+  let time1 = performance.now();
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
     const boardWithMines = JSON.parse(JSON.stringify(board));
@@ -79,11 +89,16 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
     }
   }
+  let time2 = performance.now();
+  console.log("Left click", time2 - time1);
 };
 
 export const cellRightClick = (id) => (dispatch, getState) => {
+  let time1 = performance.now();
   const { board, flagsCount, boardMinesCount } = getState().sapper;
   const updatedBoard = JSON.parse(JSON.stringify(board));
+  // const updatedBoard = { ...board };
+  // const updatedBoard = Object.assign({}, board);
   const currentItem = updatedBoard[id];
   if (currentItem.isFlagged) {
     dispatch({
@@ -118,6 +133,8 @@ export const cellRightClick = (id) => (dispatch, getState) => {
       }
     }
   }
+  let time2 = performance.now();
+  console.log("Right click", time2 - time1);
 };
 
 export const setGameOverTime = (time) => {

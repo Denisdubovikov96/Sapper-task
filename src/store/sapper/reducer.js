@@ -63,6 +63,7 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
         ...state,
         board: payload,
       };
+
     case CELL_RIGHT_CLICK:
       return {
         ...state,

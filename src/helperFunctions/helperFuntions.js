@@ -24,7 +24,9 @@ export const getRanCoord = (min, max) => {
 };
 
 export const recursionOpen = (board, id) => {
-  board[id].isOpen = true;
+  if (!board[id].isOpen) {
+    board[id].isOpen = true;
+  }
   if (board[id].neighborMineCount === 0) {
     const notOpenNeighbors = board[id].neighbors.filter((xy) => {
       return !board[xy].isOpen && !board[xy].isFlagged;

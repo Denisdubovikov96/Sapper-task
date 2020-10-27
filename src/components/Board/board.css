@@ -1,0 +1,154 @@
+.game {
+  background: white;
+  margin: 20px auto;
+  border: 2px solid #bdbdbd;
+  border-radius: 5px;
+  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.45);
+  color: #3f51b5;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
+.board {
+  display: grid;
+  padding: 2px;
+  border-top: 2px solid #bdbdbd;
+  background: white;
+  overflow: hidden;
+  z-index: 100;
+  position: relative;
+}
+.overlay:before {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  font-size: 50px;
+  font-weight: 600;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  color: white;
+  background: rgba(0, 0, 0, 0.66);
+  content: "Game Over";
+  animation: scale 0.3s linear both;
+}
+
+.cell {
+  z-index: 1000;
+  background: #ffe082;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  border-radius: 4px;
+  transition: all 0.1s linear;
+  overflow: hidden;
+  box-shadow: 0px 0px 15px 0px white;
+  font-size: 16px;
+  font-weight: 900;
+}
+.cell:hover {
+  box-shadow: 3px 3px 8px 0px black;
+  background: white;
+  cursor: pointer;
+}
+.cell > img {
+  width: 22px;
+  height: 22px;
+  z-index: 1000;
+}
+
+.cellOpen {
+  background: #cfd8dc;
+}
+.cellOpen:hover {
+  box-shadow: 0px 0px 15px 0px white;
+  background: #cfd8dc;
+  cursor: default;
+}
+.pannel {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 24px;
+  font-weight: 400;
+  z-index: 1;
+  padding: 0 20px;
+}
+.controllers {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffe082;
+  border: 2px solid #3f51b5;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  font-size: 20px;
+  color: #3f51b5;
+  transition: all 0.2s linear;
+  cursor: pointer;
+}
+.menuButton:hover {
+  background: #3f51b5;
+  color: #fff;
+}
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px;
+  z-index: -1;
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  background: #fff;
+  width: 50px;
+  height: 200px;
+  border: 2px solid #bdbdbd;
+  transition: all 0.3s linear;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  opacity: 0;
+}
+.sideBar.expanded {
+  z-index: -1;
+  left: -50px;
+  opacity: 1;
+}
+
+.resultPannel {
+  border-top: 2px solid #bdbdbd;
+  font-size: 18px;
+  font-weight: 500;
+}
+.resultPannel > h2 {
+  margin: 8px;
+  text-align: center;
+  font-weight: 700;
+}
+.resultPannel > div {
+  margin: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(0.01);
+  }
+  to {
+    transform: scale(1);
+  }
+}

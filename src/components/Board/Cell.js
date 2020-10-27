@@ -1,9 +1,11 @@
 import React from "react";
+import classNames from "classnames";
 import { booom, bombIcon, flag, stopBoom } from "../../statik";
 
-export default function Cell({ item, isGameOver, cellClassNames }) {
+export default function Cell({ item, isGameOver }) {
   const { neighborMineCount, isOpen, isMined, isFlagged, id } = item;
-  const cls = `${isOpen ? cellClassNames.cellOpen : ""} ${cellClassNames.cell}`;
+
+  const cls = classNames("cell", { cellOpen: isOpen });
   const fontColor = (count) => {
     switch (count) {
       case 0:
