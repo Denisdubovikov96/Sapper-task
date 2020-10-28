@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { booom, bombIcon, flag, stopBoom } from "../../statik";
+import { booom, bombIcon, flag, stopBoom } from "../../static";
 
 export default function Cell({ item, isGameOver }) {
   const { neighborMineCount, isOpen, isMined, isFlagged, id } = item;
