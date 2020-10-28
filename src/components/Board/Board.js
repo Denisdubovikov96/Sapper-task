@@ -30,19 +30,18 @@ export default function Board() {
   const handlerRightClick = (e) => {
     e.preventDefault();
     let id = e.target.closest("div").dataset.id;
-    if (!board[id]) {
-      return;
-    }
-    if (!isGameOver && !board[id].isOpen && isStarted) {
+    if (!!board[id] && !isGameOver && !board[id].isOpen && isStarted) {
       dispatch(cellRightClick(id));
     }
   };
   const handlerLeftClick = (e) => {
     let id = e.target.closest("div").dataset.id;
-    if (!board[id]) {
-      return;
-    }
-    if (!isGameOver && !board[id].isOpen && !board[id].isFlagged) {
+    if (
+      !!board[id] &&
+      !isGameOver &&
+      !board[id].isOpen &&
+      !board[id].isFlagged
+    ) {
       dispatch(cellLeftClick(id));
     }
   };
