@@ -36,25 +36,47 @@ const setBoard = (createdBoard) => {
   };
 };
 
+const gameOver = (cellId, safeMines, isGameWin) => {
+  return {
+    type: GAME_OVER,
+    payload: {
+      cellId: cellId,
+      safeMines: safeMines.length,
+      isGameWin: isGameWin,
+    },
+  };
+};
+
+const setFlag = (id, isFlagged, flagsCount) => {
+  return {
+    type: CELL_RIGHT_CLICK,
+    payload: {
+      cellId: id,
+      isFlagged: isFlagged,
+      flagsCount: flagsCount,
+    },
+  };
+};
+
+export const setGameOverTime = (time) => {
+  return {
+    type: SET_GAME_OVER_TIME,
+    payload: time,
+  };
+};
+
 export const changeGameLvl = (gameSize) => (dispatch) => {
-  // let time1 = performance.now();
   dispatch(initGame(gameSize));
   dispatch(createBoard());
-  // let time2 = performance.now();
-  // console.log("change lvl", time2 - time1);
 };
 
 export const restart = () => (dispatch, getState) => {
-  // let time1 = performance.now();
   const { gameSize } = getState().sapper;
   dispatch(initGame(gameSize));
   dispatch(createBoard());
-  // let time2 = performance.now();
-  // console.log("restart", time2 - time1);
 };
 
 export const createBoard = () => (dispatch, getState) => {
-  // let time1 = performance.now();
   const { gameSize } = getState().sapper;
   const board = {};
   for (let x = 0; x < gameSize; x++) {
@@ -63,18 +85,12 @@ export const createBoard = () => (dispatch, getState) => {
     }
   }
   dispatch(setBoard(board));
-  // let time2 = performance.now();
-  // console.log("create board", time2 - time1);
 };
 
 export const cellLeftClick = (id) => (dispatch, getState) => {
-  // let time1 = performance.now();
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
-    // ?------------------
     const boardWithMines = JSON.parse(JSON.stringify(board));
-    // const boardWithMines = { ...board };
-    // const boardWithMines = Object.assign({}, board);
     boardWithMines[id].isOpen = true;
     let i = 0;
     do {
@@ -91,57 +107,26 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
     const boardAfterFirstOpen = recursionOpen(boardWithMines, id);
     dispatch(startGame(boardAfterFirstOpen));
   } else {
-    // ?------------------
-    // const updatedBoard = JSON.parse(JSON.stringify(board));
-    const updatedBoard = { ...board };
-    // const updatedBoard = Object.assign({}, board);
-    if (updatedBoard[id].isMined) {
-      updatedBoard[id].isOpen = true;
-      const safeMines = Object.keys(updatedBoard).filter((key) => {
-        return updatedBoard[key].isMined && updatedBoard[key].isFlagged;
+    if (board[id].isMined) {
+      const safeMines = Object.keys(board).filter((key) => {
+        return board[key].isMined && board[key].isFlagged;
       });
-      dispatch({
-        type: GAME_OVER,
-        payload: { board: updatedBoard, safeMines: safeMines.length },
-      });
+      dispatch(gameOver(id, safeMines, false));
     } else {
+      const updatedBoard = { ...board };
       const opensBoard = recursionOpen(updatedBoard, id);
       dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
     }
   }
-  // let time2 = performance.now();
-  // console.log("Left click", time2 - time1);
 };
 
 export const cellRightClick = (id) => (dispatch, getState) => {
-  // let time1 = performance.now();
-  const {
-    board: updatedBoard,
-    flagsCount,
-    boardMinesCount,
-  } = getState().sapper;
-  // ?------------------
-  // const updatedBoard = JSON.parse(JSON.stringify(board));
-  // const updatedBoard = { ...board };
-  // const updatedBoard = Object.assign({}, board);
-  // const currentItem = updatedBoard[id];
-  if (updatedBoard[id].isFlagged) {
-    dispatch({
-      type: CELL_RIGHT_CLICK,
-      payload: {
-        cell: { [id]: { ...updatedBoard[id], isFlagged: false } },
-        flagsCount: flagsCount + 1,
-      },
-    });
+  const { board, flagsCount, boardMinesCount } = getState().sapper;
+  if (board[id].isFlagged) {
+    dispatch(setFlag(id, false, flagsCount + 1));
   } else {
     if (flagsCount >= 1) {
-      dispatch({
-        type: CELL_RIGHT_CLICK,
-        payload: {
-          cell: { [id]: { ...updatedBoard[id], isFlagged: true } },
-          flagsCount: flagsCount - 1,
-        },
-      });
+      dispatch(setFlag(id, true, flagsCount - 1));
       const {
         flagsCount: countAfterUpdate,
         board: boardAfterUpdate,
@@ -158,13 +143,4 @@ export const cellRightClick = (id) => (dispatch, getState) => {
       }
     }
   }
-  // let time2 = performance.now();
-  // console.log("Right click", time2 - time1);
-};
-
-export const setGameOverTime = (time) => {
-  return {
-    type: SET_GAME_OVER_TIME,
-    payload: time,
-  };
 };

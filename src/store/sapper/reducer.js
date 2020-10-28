@@ -70,15 +70,21 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
         flagsCount: payload.flagsCount,
         board: {
           ...state.board,
-          ...payload.cell,
+          [payload.cellId]: {
+            ...state.board[payload.cellId],
+            isFlagged: payload.isFlagged,
+          },
         },
       };
     case GAME_OVER:
       return {
         ...state,
         isGameOver: true,
-        isGameWin: false,
-        board: payload.board,
+        isGameWin: payload.isGameWin,
+        board: {
+          ...state.board,
+          [payload.cellId]: { ...state.board[payload.cellId], isOpen: true },
+        },
         score: { ...state.score, safeMines: payload.safeMines },
       };
     case GAME_WIN:
@@ -97,5 +103,3 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
       return state;
   }
 };
-
-// { ...state.board, payload: { ...state.board[payload], isFlagged: true } }

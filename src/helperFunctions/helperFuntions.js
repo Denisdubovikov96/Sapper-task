@@ -31,10 +31,14 @@ export const recursionOpen = (board, id) => {
     const notOpenNeighbors = board[id].neighbors.filter((xy) => {
       return !board[xy].isOpen && !board[xy].isFlagged;
     });
-    for (let neighborId of notOpenNeighbors) {
-      board[neighborId].isOpen = true;
-      if (board[neighborId].neighborMineCount === 0) {
-        recursionOpen(board, neighborId);
+    if (notOpenNeighbors.length !== 0) {
+      for (let neighborId of notOpenNeighbors) {
+        if (!board[neighborId].isOpen) {
+          board[neighborId].isOpen = true;
+        }
+        if (board[neighborId].neighborMineCount === 0) {
+          recursionOpen(board, neighborId);
+        }
       }
     }
   }
@@ -68,7 +72,10 @@ export const setNeighbors = (pseudoArray) => {
         pseudoArray[currentKey].isMined ? acumulator + 1 : acumulator,
       0
     );
-    pseudoArray[item].neighbors = filterNeigbours;
-    pseudoArray[item].neighborMineCount = minesCount;
+    pseudoArray[item] = {
+      ...pseudoArray[item],
+      neighbors: filterNeigbours,
+      neighborMineCount: minesCount,
+    };
   });
 };

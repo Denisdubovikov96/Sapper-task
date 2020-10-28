@@ -42,7 +42,7 @@ export default function Board() {
     if (!board[id]) {
       return;
     }
-    if (!isGameOver && !!board[id] && !board[id].isFlagged) {
+    if (!isGameOver && !board[id].isOpen && !board[id].isFlagged) {
       dispatch(cellLeftClick(id));
     }
   };
