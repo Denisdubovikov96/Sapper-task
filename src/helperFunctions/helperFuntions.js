@@ -23,26 +23,40 @@ export const getRanCoord = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export const recursionOpen = (board, id) => {
-  if (!board[id].isOpen) {
-    board[id].isOpen = true;
-  }
-  if (board[id].neighborMineCount === 0) {
-    const notOpenNeighbors = board[id].neighbors.filter((xy) => {
-      return !board[xy].isOpen && !board[xy].isFlagged;
-    });
-    if (notOpenNeighbors.length !== 0) {
-      for (let neighborId of notOpenNeighbors) {
-        if (!board[neighborId].isOpen) {
-          board[neighborId].isOpen = true;
+// export const recursionOpen = (board, id) => {
+//   if (!board[id].isOpen) {
+//     board[id].isOpen = true;
+//   }
+//   if (board[id].neighborMineCount === 0) {
+//     const notOpenNeighbors = board[id].neighbors.filter((xy) => {
+//       return !board[xy].isOpen && !board[xy].isFlagged;
+//     });
+//     if (notOpenNeighbors.length !== 0) {
+//       for (let neighborId of notOpenNeighbors) {
+//         if (!board[neighborId].isOpen) {
+//           board[neighborId].isOpen = true;
+//         }
+//         if (board[neighborId].neighborMineCount === 0) {
+//           recursionOpen(board, neighborId);
+//         }
+//       }
+//     }
+//   }
+//   return board;
+// };
+
+export const recursionOpen = (board, id, newBoard = {}) => {
+  if (!newBoard[id]) {
+    newBoard[id] = { ...board[id], isOpen: true };
+    if (newBoard[id].neighborMineCount === 0) {
+      newBoard[id].neighbors.forEach((xy) => {
+        if (!board[xy].isFlagged) {
+          recursionOpen(board, xy, newBoard);
         }
-        if (board[neighborId].neighborMineCount === 0) {
-          recursionOpen(board, neighborId);
-        }
-      }
+      });
     }
+    return newBoard;
   }
-  return board;
 };
 
 export const findCountMined = (pseudoArray) => {

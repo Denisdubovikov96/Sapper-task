@@ -1,7 +1,7 @@
 import {
+  recursionOpen,
   createCell,
   getRanCoord,
-  recursionOpen,
   setNeighbors,
 } from "../../helperFunctions/helperFuntions";
 import {
@@ -15,17 +15,13 @@ import {
   GAME_WIN,
 } from "./actionTypes";
 
-export const initGame = (gameSize) => {
-  return {
-    type: INIT_GAME,
-    payload: gameSize,
-  };
-};
-
-const startGame = (boardAfterFirsClick) => {
+const startGame = (boardWithNeighbor, boardAfterFirsClick) => {
   return {
     type: START_GAME,
-    payload: boardAfterFirsClick,
+    payload: {
+      board: boardWithNeighbor,
+      openedCells: boardAfterFirsClick,
+    },
   };
 };
 
@@ -70,6 +66,13 @@ export const changeGameLvl = (gameSize) => (dispatch) => {
   dispatch(createBoard());
 };
 
+export const initGame = (gameSize) => {
+  return {
+    type: INIT_GAME,
+    payload: gameSize,
+  };
+};
+
 export const restart = () => (dispatch, getState) => {
   const { gameSize } = getState().sapper;
   dispatch(initGame(gameSize));
@@ -91,7 +94,6 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
     const boardWithMines = JSON.parse(JSON.stringify(board));
-    boardWithMines[id].isOpen = true;
     let i = 0;
     do {
       const randomId = `${getRanCoord(0, gameSize - 1)}-${getRanCoord(
@@ -105,7 +107,7 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
     } while (i < boardMinesCount);
     setNeighbors(boardWithMines);
     const boardAfterFirstOpen = recursionOpen(boardWithMines, id);
-    dispatch(startGame(boardAfterFirstOpen));
+    dispatch(startGame(boardWithMines, boardAfterFirstOpen));
   } else {
     if (board[id].isMined) {
       const safeMines = Object.keys(board).filter((key) => {
@@ -113,8 +115,7 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       });
       dispatch(gameOver(id, safeMines, false));
     } else {
-      const updatedBoard = { ...board };
-      const opensBoard = recursionOpen(updatedBoard, id);
+      const opensBoard = recursionOpen(board, id);
       dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
     }
   }

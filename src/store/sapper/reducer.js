@@ -54,16 +54,18 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
     case START_GAME:
       return {
         ...state,
-        board: payload,
+        board: {
+          ...payload.board,
+          ...payload.openedCells,
+        },
         isStarted: true,
         flagsCount: state.boardMinesCount,
       };
     case CELL_LEFT_CLICK:
       return {
         ...state,
-        board: payload,
+        board: { ...state.board, ...payload },
       };
-
     case CELL_RIGHT_CLICK:
       return {
         ...state,
