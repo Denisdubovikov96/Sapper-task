@@ -128,7 +128,7 @@
   transition: all 0.2s linear;
   cursor: pointer;
 }
-.menuButton:hover {
+.btn:hover {
   background: #3f51b5;
   color: #fff;
 }

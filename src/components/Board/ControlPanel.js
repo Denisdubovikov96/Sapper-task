@@ -38,7 +38,6 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     return () => {
       stop();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameOver]);
 
   useEffect(() => {
@@ -51,7 +50,6 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
     return () => {
       stop();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStarted]);
 
   return (
