@@ -61,7 +61,7 @@ export const recursionOpen = (board, id, newBoard = {}) => {
 
 export const getTimeString = (sec) => {
   let seconds = sec % 60;
-  let minutes = Math.floor(sec / 60);
+  let minutes = ~~(sec / 60);
   if (seconds < 10) {
     seconds = "0" + seconds;
   }
