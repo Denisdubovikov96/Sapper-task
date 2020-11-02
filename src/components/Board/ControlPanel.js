@@ -8,6 +8,7 @@ import {
   changeGameLvl,
 } from "../../store/sapper/actions";
 import { useState } from "react";
+import { getTimeString } from "../../helperFunctions/helperFuntions";
 
 const buttons = [
   { gameSize: 10, label: "S" },
@@ -64,7 +65,7 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
         )}
       </button>
       <div className={controllers}>
-        <span>{`${time} sec`}</span>
+        <span>{getTimeString(time)}</span>
         <span>{flagsCount}</span>
       </div>
       <div className={sideBar}>
