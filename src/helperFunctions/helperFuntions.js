@@ -49,11 +49,11 @@ export const recursionOpen = (board, id, newBoard = {}) => {
   if (!newBoard[id]) {
     newBoard[id] = { ...board[id], isOpen: true };
     if (newBoard[id].neighborMineCount === 0) {
-      newBoard[id].neighbors.forEach((xy) => {
-        if (!board[xy].isFlagged) {
+      newBoard[id].neighbors
+        .filter((xy) => !board[xy].isFlagged)
+        .forEach((xy) => {
           recursionOpen(board, xy, newBoard);
-        }
-      });
+        });
     }
     return newBoard;
   }

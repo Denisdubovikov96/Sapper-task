@@ -25,6 +25,10 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
   const pannel = classNames("pannel");
   const sideBar = classNames("sideBar", { expanded: isExpanded });
   const controllers = classNames("controllers");
+  const iconCls = classNames(
+    "fas",
+    `fa-${isExpanded ? "compress" : "expand"}-arrows-alt`
+  );
 
   useEffect(() => {
     if (isGameOver) {
@@ -58,11 +62,7 @@ export default function ControlPanel({ isStarted, isGameOver, flagsCount }) {
           setIsExpanded(!isExpanded);
         }}
       >
-        {isExpanded ? (
-          <i className="fas fa-compress-arrows-alt" />
-        ) : (
-          <i className="fas fa-expand-arrows-alt" />
-        )}
+        <i className={iconCls} />
       </button>
       <div className={controllers}>
         <span>{getTimeString(time)}</span>
