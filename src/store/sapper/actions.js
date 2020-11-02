@@ -106,8 +106,8 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       }
     } while (i < boardMinesCount);
     setNeighbors(boardWithMines);
-    const boardAfterFirstOpen = recursionOpen(boardWithMines, id);
-    dispatch(startGame(boardWithMines, boardAfterFirstOpen));
+    const openCellsAfterFirstClick = recursionOpen(boardWithMines, id);
+    dispatch(startGame(boardWithMines, openCellsAfterFirstClick));
   } else {
     if (board[id].isMined) {
       const safeMines = Object.keys(board).filter((key) => {
@@ -115,8 +115,8 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       });
       dispatch(gameOver(id, safeMines, false));
     } else {
-      const opensBoard = recursionOpen(board, id);
-      dispatch({ type: CELL_LEFT_CLICK, payload: opensBoard });
+      const openCells = recursionOpen(board, id);
+      dispatch({ type: CELL_LEFT_CLICK, payload: openCells });
     }
   }
 };

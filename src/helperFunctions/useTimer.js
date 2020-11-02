@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default () => {
+export default function useTimer() {
   const [time, setTime] = useState(0);
   const [intervalId, setIntervalId] = useState();
 
@@ -16,4 +16,4 @@ export default () => {
   };
 
   return { time, start, stop };
-};
+}
