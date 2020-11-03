@@ -20,7 +20,10 @@ export const createCell = (
 };
 
 export const getRanCoord = (min, max) => {
-  return ~~(Math.random() * (max - min) + min);
+  return `${~~(Math.random() * (max - min) + min)}-${~~(
+    Math.random() * (max - min) +
+    min
+  )}`;
 };
 
 // export const recursionOpen = (board, id) => {
