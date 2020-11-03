@@ -108,7 +108,8 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
     console.time("startGame");
-    const boardWithMines = JSON.parse(JSON.stringify(board));
+    // const boardWithMines = JSON.parse(JSON.stringify(board));
+    const boardWithMines = { ...board };
     let i = 0;
     do {
       const randomId = `${getRanCoord(0, gameSize)}-${getRanCoord(
@@ -121,8 +122,8 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       }
     } while (i < boardMinesCount);
     setNeighborsMinesCount(boardWithMines);
-    const idCellsForOpen = alternative(boardWithMines, id);
-    dispatch(startGame(boardWithMines, idCellsForOpen));
+    // const idCellsForOpen = alternative(boardWithMines, id);
+    dispatch(startGame(boardWithMines, alternative(boardWithMines, id)));
     // ! change reducer for this
     // const openCellsAfterFirstClick = recursionOpen(boardWithMines, id);
     // dispatch(startGame(boardWithMines, openCellsAfterFirstClick));
@@ -135,11 +136,9 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       dispatch(gameOver(id, safeMines, false));
     } else {
       console.time("cellLeftClick");
-      const idCellsForOpen = alternative(board, id);
-      dispatch({ type: CELL_LEFT_CLICK, payload: idCellsForOpen });
+      dispatch({ type: CELL_LEFT_CLICK, payload: alternative(board, id) });
       // ! change reducer for this
-      // const openCells = recursionOpen(board, id);
-      // dispatch({ type: CELL_LEFT_CLICK, payload: openCells });
+      // dispatch({ type: CELL_LEFT_CLICK, payload: recursionOpen(board, id) });
       console.timeEnd("cellLeftClick");
     }
   }
