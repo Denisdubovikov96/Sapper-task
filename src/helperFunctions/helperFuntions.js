@@ -49,34 +49,28 @@ export const recursionOpen = (board, id, newBoard = {}) => {
   if (!newBoard[id]) {
     newBoard[id] = { ...board[id], isOpen: true };
     if (newBoard[id].neighborMineCount === 0) {
-      newBoard[id].neighbors
-        .filter((xy) => !board[xy].isFlagged)
-        .forEach((xy) => {
+      newBoard[id].neighbors.forEach((xy) => {
+        if (!board[xy].isFlagged) {
           recursionOpen(board, xy, newBoard);
-        });
+        }
+      });
     }
     return newBoard;
   }
 };
 
 export const getTimeString = (sec) => {
-  let seconds = sec % 60;
-  let minutes = ~~(sec / 60);
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
+  let seconds = sec % 60 < 10 ? `0${sec % 60}` : sec % 60;
+  let minutes = ~~(sec / 60) < 10 ? `0${~~(sec / 60)}` : ~~(sec / 60);
   return `${minutes}:${seconds}`;
 };
 
-export const findCountMined = (pseudoArray) => {
-  const count = Object.keys(pseudoArray).filter((key) => {
-    return pseudoArray[key].isMined;
-  });
-  return count.length;
-};
+// export const findCountMined = (pseudoArray) => {
+//   const count = Object.keys(pseudoArray).filter((key) => {
+//     return pseudoArray[key].isMined;
+//   });
+//   return count.length;
+// };
 
 export const setNeighbors = (pseudoArray) => {
   Object.keys(pseudoArray).forEach((item) => {
@@ -93,15 +87,18 @@ export const setNeighbors = (pseudoArray) => {
     const filterNeigbours = neighbors.filter((coordId) =>
       pseudoArray[coordId] ? coordId : null
     );
-    const minesCount = filterNeigbours.reduce(
+    pseudoArray[item].neighbors = filterNeigbours;
+  });
+};
+
+export const setNeighborsMinesCount = (pseudoArray) => {
+  Object.keys(pseudoArray).forEach((item) => {
+    const { neighbors } = pseudoArray[item];
+    const minesCount = neighbors.reduce(
       (acumulator, currentKey) =>
         pseudoArray[currentKey].isMined ? acumulator + 1 : acumulator,
       0
     );
-    pseudoArray[item] = {
-      ...pseudoArray[item],
-      neighbors: filterNeigbours,
-      neighborMineCount: minesCount,
-    };
+    pseudoArray[item].neighborMineCount = minesCount;
   });
 };

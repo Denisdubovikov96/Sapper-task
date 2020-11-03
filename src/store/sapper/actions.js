@@ -3,6 +3,7 @@ import {
   createCell,
   getRanCoord,
   setNeighbors,
+  setNeighborsMinesCount,
 } from "../../helperFunctions/helperFuntions";
 import {
   INIT_GAME,
@@ -43,6 +44,13 @@ const gameOver = (cellId, safeMines, isGameWin) => {
   };
 };
 
+const gameWin = (score) => {
+  return {
+    type: GAME_WIN,
+    payload: score,
+  };
+};
+
 const setFlag = (id, isFlagged, flagsCount) => {
   return {
     type: CELL_RIGHT_CLICK,
@@ -61,11 +69,6 @@ export const setGameOverTime = (time) => {
   };
 };
 
-export const changeGameLvl = (gameSize) => (dispatch) => {
-  dispatch(initGame(gameSize));
-  dispatch(createBoard());
-};
-
 export const initGame = (gameSize) => {
   return {
     type: INIT_GAME,
@@ -73,13 +76,21 @@ export const initGame = (gameSize) => {
   };
 };
 
-export const restart = () => (dispatch, getState) => {
-  const { gameSize } = getState().sapper;
+export const changeGameLvl = (gameSize) => (dispatch) => {
   dispatch(initGame(gameSize));
   dispatch(createBoard());
 };
 
+export const restart = () => (dispatch, getState) => {
+  // console.time("restart");
+  const { gameSize } = getState().sapper;
+  dispatch(initGame(gameSize));
+  dispatch(createBoard());
+  // console.timeEnd("restart");
+};
+
 export const createBoard = () => (dispatch, getState) => {
+  // console.time("createBoard");
   const { gameSize } = getState().sapper;
   const board = {};
   for (let x = 0; x < gameSize; x++) {
@@ -87,12 +98,15 @@ export const createBoard = () => (dispatch, getState) => {
       board[`${x}-${y}`] = createCell(x, y, false, false, false, null, []);
     }
   }
+  setNeighbors(board);
   dispatch(setBoard(board));
+  // console.timeEnd("createBoard");
 };
 
 export const cellLeftClick = (id) => (dispatch, getState) => {
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
+    // console.time("startGame");
     const boardWithMines = JSON.parse(JSON.stringify(board));
     let i = 0;
     do {
@@ -105,10 +119,12 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
         i++;
       }
     } while (i < boardMinesCount);
-    setNeighbors(boardWithMines);
+    setNeighborsMinesCount(boardWithMines);
     const openCellsAfterFirstClick = recursionOpen(boardWithMines, id);
     dispatch(startGame(boardWithMines, openCellsAfterFirstClick));
+    // console.timeEnd("startGame");
   } else {
+    // console.time("cellLeftClick");
     if (board[id].isMined) {
       const safeMines = Object.keys(board).filter((key) => {
         return board[key].isMined && board[key].isFlagged;
@@ -118,10 +134,12 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       const openCells = recursionOpen(board, id);
       dispatch({ type: CELL_LEFT_CLICK, payload: openCells });
     }
+    // console.timeEnd("cellLeftClick");
   }
 };
 
 export const cellRightClick = (id) => (dispatch, getState) => {
+  // console.time("cellRightClick");
   const { board, flagsCount, boardMinesCount } = getState().sapper;
   if (board[id].isFlagged) {
     dispatch(setFlag(id, false, flagsCount + 1));
@@ -139,9 +157,10 @@ export const cellRightClick = (id) => (dispatch, getState) => {
           );
         });
         if (safeMines.length === boardMinesCount) {
-          dispatch({ type: GAME_WIN, payload: safeMines.length });
+          dispatch(gameWin(safeMines.length));
         }
       }
     }
   }
+  // console.timeEnd("cellRightClick");
 };

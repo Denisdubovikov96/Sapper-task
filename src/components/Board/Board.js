@@ -20,8 +20,10 @@ export default function Board() {
   } = useSelector(({ sapper }) => sapper);
   const dispatch = useDispatch();
 
-  const gameClassName = classNames("game");
-  const boardClassName = classNames("board", { overlay: isGameOver });
+  const gameClassName = classNames("game", `g-size-${gameSize}`);
+  const boardClassName = classNames("board", `b-size-${gameSize}`, {
+    overlay: isGameOver,
+  });
 
   useEffect(() => {
     dispatch(createBoard());
@@ -55,10 +57,7 @@ export default function Board() {
   };
 
   return (
-    <div
-      className={gameClassName}
-      style={{ width: `calc(${gameSize * 40}px + 4px)` }}
-    >
+    <div className={gameClassName}>
       <ControlPanel
         isStarted={isStarted}
         isGameOver={isGameOver}
@@ -66,12 +65,6 @@ export default function Board() {
       />
       <div
         className={boardClassName}
-        style={{
-          width: `${gameSize * 40}px`,
-          height: `${gameSize * 40}px`,
-          gridTemplateColumns: `repeat(${gameSize}, 1fr)`,
-          gridTemplateRows: `repeat(${gameSize}, 1fr)`,
-        }}
         onClick={(e) => handlerLeftClick(e)}
         onContextMenu={(e) => handlerRightClick(e)}
       >
