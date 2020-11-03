@@ -25,6 +25,7 @@ const initialState = {
 };
 
 export const sapperReduser = (state = initialState, { type, payload }) => {
+  // debugger;
   switch (type) {
     case INIT_GAME:
       return {
@@ -51,20 +52,49 @@ export const sapperReduser = (state = initialState, { type, payload }) => {
         ...state,
         board: payload,
       };
+    // ! for recursionOpen
+    // case START_GAME:
+    //   return {
+    //     ...state,
+    //     board: {
+    //       ...payload.board,
+    //       ...payload.openedCells,
+    //     },
+    //     isStarted: true,
+    //     flagsCount: state.boardMinesCount,
+    //   };
+    // ? for alternative
     case START_GAME:
       return {
         ...state,
         board: {
           ...payload.board,
-          ...payload.openedCells,
+          ...Object.fromEntries(
+            payload.openedCells.map((xy) => [
+              xy,
+              { ...payload.board[xy], isOpen: true },
+            ])
+          ),
         },
         isStarted: true,
         flagsCount: state.boardMinesCount,
       };
+    // ! for recursionOpen
+    // case CELL_LEFT_CLICK:
+    //   return {
+    //     ...state,
+    //     board: { ...state.board, ...payload },
+    //   };
+    // ? for alternative
     case CELL_LEFT_CLICK:
       return {
         ...state,
-        board: { ...state.board, ...payload },
+        board: {
+          ...state.board,
+          ...Object.fromEntries(
+            payload.map((xy) => [xy, { ...state.board[xy], isOpen: true }])
+          ),
+        },
       };
     case CELL_RIGHT_CLICK:
       return {

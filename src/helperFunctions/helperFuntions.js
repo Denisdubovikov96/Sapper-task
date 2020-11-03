@@ -20,7 +20,7 @@ export const createCell = (
 };
 
 export const getRanCoord = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return ~~(Math.random() * (max - min) + min);
 };
 
 // export const recursionOpen = (board, id) => {
@@ -56,6 +56,19 @@ export const recursionOpen = (board, id, newBoard = {}) => {
       });
     }
     return newBoard;
+  }
+};
+export const alternative = (board, id, arr = []) => {
+  if (!arr.includes(id)) {
+    arr.push(id);
+    if (board[id].neighborMineCount === 0) {
+      board[id].neighbors.forEach((xy) => {
+        if (!board[xy].isFlagged) {
+          alternative(board, xy, arr);
+        }
+      });
+    }
+    return arr;
   }
 };
 

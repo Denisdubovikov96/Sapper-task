@@ -4,6 +4,7 @@ import {
   getRanCoord,
   setNeighbors,
   setNeighborsMinesCount,
+  alternative,
 } from "../../helperFunctions/helperFuntions";
 import {
   INIT_GAME,
@@ -106,13 +107,13 @@ export const createBoard = () => (dispatch, getState) => {
 export const cellLeftClick = (id) => (dispatch, getState) => {
   const { isStarted, board, gameSize, boardMinesCount } = getState().sapper;
   if (!isStarted) {
-    // console.time("startGame");
+    console.time("startGame");
     const boardWithMines = JSON.parse(JSON.stringify(board));
     let i = 0;
     do {
-      const randomId = `${getRanCoord(0, gameSize - 1)}-${getRanCoord(
+      const randomId = `${getRanCoord(0, gameSize)}-${getRanCoord(
         0,
-        gameSize - 1
+        gameSize
       )}`;
       if (!boardWithMines[randomId].isMined && randomId !== id) {
         boardWithMines[randomId].isMined = true;
@@ -120,21 +121,27 @@ export const cellLeftClick = (id) => (dispatch, getState) => {
       }
     } while (i < boardMinesCount);
     setNeighborsMinesCount(boardWithMines);
-    const openCellsAfterFirstClick = recursionOpen(boardWithMines, id);
-    dispatch(startGame(boardWithMines, openCellsAfterFirstClick));
-    // console.timeEnd("startGame");
+    const idCellsForOpen = alternative(boardWithMines, id);
+    dispatch(startGame(boardWithMines, idCellsForOpen));
+    // ! change reducer for this
+    // const openCellsAfterFirstClick = recursionOpen(boardWithMines, id);
+    // dispatch(startGame(boardWithMines, openCellsAfterFirstClick));
+    console.timeEnd("startGame");
   } else {
-    // console.time("cellLeftClick");
     if (board[id].isMined) {
       const safeMines = Object.keys(board).filter((key) => {
         return board[key].isMined && board[key].isFlagged;
       });
       dispatch(gameOver(id, safeMines, false));
     } else {
-      const openCells = recursionOpen(board, id);
-      dispatch({ type: CELL_LEFT_CLICK, payload: openCells });
+      console.time("cellLeftClick");
+      const idCellsForOpen = alternative(board, id);
+      dispatch({ type: CELL_LEFT_CLICK, payload: idCellsForOpen });
+      // ! change reducer for this
+      // const openCells = recursionOpen(board, id);
+      // dispatch({ type: CELL_LEFT_CLICK, payload: openCells });
+      console.timeEnd("cellLeftClick");
     }
-    // console.timeEnd("cellLeftClick");
   }
 };
 
